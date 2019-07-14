@@ -15,15 +15,15 @@ const WELCOME_MESSAGE =
   `If you want to subscribe to notifications for a gym, tap the ${SUBSCRIBE_EMOJI} symbol beneath it. If you later want to unsubscribe, tap the ${UNSUBSCRIBE_EMOJI} symbol.\n\n` +
   `When someone **@mentions** a gym that you are subscribed to, you will get a notification. That way you’ll never miss a raid there!\n\n` +
   `If you want to see all of the gyms that you subscribe to, find your name in the list of members for this group and tap on it. That will show you your profile, which has all of your subscribed gyms listed as roles.\n\n` +
-  `That’s all there is to it! Good luck in all your battles — I know you’ll do great!\n\n`
+  `That’s all there is to it! Good luck in all your battles — I know you’ll do great!`
 
 client.on('ready', () => {
-  client.guilds.tap(guild => initGuild(guild))
+  client.guilds.tap(async guild => initGuild(guild))
   console.log('Ready.')
 })
 
-client.on('guildCreate', guild => {
-  initGuild(guild)
+client.on('guildCreate', async guild => {
+  await initGuild(guild)
 })
 
 client.on('message', async message => {
@@ -42,7 +42,7 @@ client.on('message', async message => {
   for (const gym of gyms) {
     const role = await getOrCreateGymRole(message.guild, gym)
     if (role.mentionable) {
-      const roleMessage = await message.channel.send(`<@&${role.id}>`)
+      const roleMessage = await message.channel.send(roleMessageContent(role))
       await roleMessage.react(SUBSCRIBE_EMOJI)
       await roleMessage.react(UNSUBSCRIBE_EMOJI)
     } else {
@@ -67,23 +67,23 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
   }
   const { guild } = message
   const member = guild.member(user)
-  const response = text => `**${role.name}**\n_${guild.name}_\n${text}`
-  try {
-    const emojiString = emoji.toString()
-    if (emojiString === SUBSCRIBE_EMOJI) {
+  const emojiString = emoji.toString()
+  if (emojiString === SUBSCRIBE_EMOJI) {
+    try {
       await member.addRole(role)
-      await user.send(response(`${SUBSCRIBE_EMOJI} subscribed`))
-    } else if (emojiString === UNSUBSCRIBE_EMOJI) {
-      await member.removeRole(role)
-      await user.send(response(`${UNSUBSCRIBE_EMOJI} unsubscribed`))
+    } catch (e) {
+      console.warn(e)
+      message.channel.send(`Failed to subscribe <@${user.id}> to **${role.name}**.`)
     }
-  } catch (e) {
-    console.warn(e)
-    user.send(response(
-      `Oh, sorry! It looks like I am not able to subscribe or unsubscribe people from this gym. ` +
-      `A group administrator needs to allow me to manage the _${role.name}_ role to proceed.`
-    ))
+  } else if (emojiString === UNSUBSCRIBE_EMOJI) {
+    try {
+      await member.removeRole(role)
+    } catch (e) {
+      console.warn(e)
+      message.channel.send(`Failed to unsubscribe <@${user.id}> from **${role.name}**.`)
+    }
   }
+  await message.edit(roleMessageContent(role))
 })
 
 /**
@@ -95,8 +95,21 @@ async function initGuild (guild) {
   const messages = await gymMembershipChannel.fetchMessages()
   const candelaMessages = messages.filter(message => message.author.id === client.user.id)
   if (candelaMessages.size === 0) {
-    gymMembershipChannel.send(WELCOME_MESSAGE)
+    await gymMembershipChannel.send(WELCOME_MESSAGE)
   }
+}
+
+/**
+ * @param {Role} role
+ * @returns {string}
+ */
+function roleMessageContent (role) {
+  const { members } = role
+  const membersList = members.map(member => `<@${member.id}>`).join(', ')
+  return `**Gym:**\n` +
+    `<@&${role.id}>\n` +
+    `**Subcribers (${members.size}):**\n` +
+    `${membersList || 'N/A'}`
 }
 
 /**
