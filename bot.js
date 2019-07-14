@@ -66,7 +66,7 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
     return
   }
   const { guild } = message
-  const member = guild.member(user)
+  const member = guild.member(user.id)
   const emojiString = emoji.toString()
   if (emojiString === SUBSCRIBE_EMOJI) {
     try {
