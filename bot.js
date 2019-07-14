@@ -32,7 +32,7 @@ client.on('message', async message => {
     )
     return
   }
-  const gyms = message.content.split('\n').map(name => name.trim())
+  const gyms = message.content.split('\n').map(name => name.trim()).filter(name => !!name)
   for (const gym of gyms) {
     const role = await getOrCreateGymRole(message.guild, gym)
     if (role.mentionable) {
@@ -61,7 +61,7 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
   }
   const { guild } = message
   const member = guild.member(user)
-  const response = text => `**${role.name}** _${guild.name}_\n${text}`
+  const response = text => `_${guild.name}_\n**${role.name}**\n${text}`
   try {
     const emojiString = emoji.toString()
     if (emojiString === SUBSCRIBE_EMOJI) {
