@@ -49,6 +49,36 @@ client.on('message', async message => {
   }
 })
 
+client.on('messageReactionAdd', async (messageReaction, user) => {
+  const { message, emoji } = messageReaction
+  if (!shouldListen(message) || (message.author.id !== client.user.id) || (user.id === client.user.id)) {
+    return
+  }
+  await messageReaction.remove(user)
+  const role = message.mentions.roles.first()
+  if (!role) {
+    return
+  }
+  const { guild } = message
+  const member = guild.member(user)
+  const response = text => `**${role.name}** _${guild.name}_\n${text}`
+  try {
+    const emojiString = emoji.toString()
+    if (emojiString === SUBSCRIBE_EMOJI) {
+      await member.addRole(role)
+      await user.send(response(`${SUBSCRIBE_EMOJI} subscribed`))
+    } else if (emojiString === UNSUBSCRIBE_EMOJI) {
+      await member.removeRole(role)
+      await user.send(response(`${UNSUBSCRIBE_EMOJI} unsubscribed`))
+    }
+  } catch (e) {
+    user.send(response(
+      `Oh, sorry! It looks like I am not able to subscribe or unsubscribe people from this gym. ` +
+      `A group administrator needs to allow me to manage the _${role.name}_ role to proceed.`
+    ))
+  }
+})
+
 /**
  * @param {Guild} guild
  */
