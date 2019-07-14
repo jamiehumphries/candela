@@ -78,6 +78,7 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
       await user.send(response(`${UNSUBSCRIBE_EMOJI} unsubscribed`))
     }
   } catch (e) {
+    console.warn(e)
     user.send(response(
       `Oh, sorry! It looks like I am not able to subscribe or unsubscribe people from this gym. ` +
       `A group administrator needs to allow me to manage the _${role.name}_ role to proceed.`
