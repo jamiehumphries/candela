@@ -1,10 +1,10 @@
-/** @typedef { import('discord.js') } Guild */
+/** @typedef { import('discord.js').Guild } Guild */
 /** @typedef { import('discord.js').Message } Message */
 /** @typedef { import('discord.js').Role } Role */
 /** @typedef { import('discord.js').TextChannel } TextChannel */
 
 const Discord = require('discord.js')
-const client = new Discord.Client()
+const client = new Discord.Client({ fetchAllMembers: true })
 
 const GYM_MEMBERSHIP = 'gym-membership'
 const SUBSCRIBE_EMOJI = '🔔'
