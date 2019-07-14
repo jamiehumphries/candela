@@ -5,7 +5,7 @@
   "main": "bot.js",
   "author": "JTAtomico",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.5.1"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
