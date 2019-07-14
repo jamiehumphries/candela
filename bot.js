@@ -7,9 +7,15 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 
 const GYM_MEMBERSHIP = 'gym-membership'
-const WELCOME_MESSAGE = 'Hi Trainers! Candela here.'
 const SUBSCRIBE_EMOJI = '🔔'
 const UNSUBSCRIBE_EMOJI = '🔕'
+const WELCOME_MESSAGE =
+  `Hi Trainers — Candela here! I’m here to help make sure you don’t miss out on raids at nearby gyms.\n\n` +
+  `Group administrators can add gyms at any time by telling me the names of the gym in this channel. Only 1 gym per line please!\n\n` +
+  `If you want to subscribe to notifications for a gym, tap the ${SUBSCRIBE_EMOJI} symbol beneath it. If you later want to unsubscribe, tap the ${UNSUBSCRIBE_EMOJI} symbol.\n\n` +
+  `When someone **@mentions** a gym that you are subscribed to, you will get a notification. That way you’ll never miss a raid there!\n\n` +
+  `If you want to see all of the gyms that you subscribe to, find your name in the list of members for this group and tap on it. That will show you your profile, which has all of your subscribed gyms listed as roles.\n\n` +
+  `That’s all there is to it! Good luck in all your battles — I know you’ll do great!\n\n`
 
 client.on('ready', () => {
   client.guilds.tap(guild => initGuild(guild))
