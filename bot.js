@@ -108,8 +108,8 @@ function roleMessageContent (role) {
   const membersList = members.map(member => `<@${member.id}>`).join(', ')
   return `**Gym:**\n` +
     `<@&${role.id}>\n` +
-    `**Subcribers (${members.size}):**\n` +
-    `${membersList || 'N/A'}`
+    `**Subscribers (${members.size}):**\n` +
+    `${membersList || 'None'}`
 }
 
 /**
