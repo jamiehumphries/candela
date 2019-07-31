@@ -163,4 +163,4 @@ function shouldListen (message) {
   return (isProduction && !isTestGuild) || (!isProduction && isTestGuild)
 }
 
-client.login(process.env.TOKEN)
+module.exports = client
