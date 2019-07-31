@@ -19,7 +19,7 @@ const WELCOME_MESSAGE =
 
 client.on('ready', () => {
   client.guilds.tap(async guild => initGuild(guild))
-  console.log('Ready.')
+  console.log('Candela is ready.')
 })
 
 client.on('guildCreate', async guild => {
