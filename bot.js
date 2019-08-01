@@ -109,7 +109,7 @@ function roleMessageContent (role) {
 
 /**
  * @param {Discord.Guild} guild
- * @returns {Discord.TextChannel}
+ * @returns {Promise<Discord.TextChannel>}
  */
 async function getOrCreateGymMembershipChannel (guild) {
   const channel = guild.channels.find(channel => channel.name === GYM_MEMBERSHIP)
@@ -129,7 +129,7 @@ async function getOrCreateGymMembershipChannel (guild) {
 /**
  * @param {Discord.Guild} guild
  * @param {string} gym
- * @returns {Discord.Role}
+ * @returns {Promise<Discord.Role>}
  */
 async function getOrCreateGymRole (guild, gym) {
   const role = guild.roles.find(role => role.name === gym)
