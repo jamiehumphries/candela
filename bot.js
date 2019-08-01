@@ -1,8 +1,3 @@
-/** @typedef { import('discord.js').Guild } Guild */
-/** @typedef { import('discord.js').Message } Message */
-/** @typedef { import('discord.js').Role } Role */
-/** @typedef { import('discord.js').TextChannel } TextChannel */
-
 const Discord = require('discord.js')
 const client = new Discord.Client({ fetchAllMembers: true })
 
@@ -87,7 +82,7 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
 })
 
 /**
- * @param {Guild} guild
+ * @param {Discord.Guild} guild
  */
 async function initGuild (guild) {
   const gymMembershipChannel = await getOrCreateGymMembershipChannel(guild)
@@ -100,7 +95,7 @@ async function initGuild (guild) {
 }
 
 /**
- * @param {Role} role
+ * @param {Discord.Role} role
  * @returns {string}
  */
 function roleMessageContent (role) {
@@ -113,8 +108,8 @@ function roleMessageContent (role) {
 }
 
 /**
- * @param {Guild} guild
- * @returns {TextChannel}
+ * @param {Discord.Guild} guild
+ * @returns {Discord.TextChannel}
  */
 async function getOrCreateGymMembershipChannel (guild) {
   const channel = guild.channels.find(channel => channel.name === GYM_MEMBERSHIP)
@@ -132,9 +127,9 @@ async function getOrCreateGymMembershipChannel (guild) {
 }
 
 /**
- * @param {Guild} guild
+ * @param {Discord.Guild} guild
  * @param {string} gym
- * @returns {Role}
+ * @returns {Discord.Role}
  */
 async function getOrCreateGymRole (guild, gym) {
   const role = guild.roles.find(role => role.name === gym)
@@ -150,7 +145,7 @@ async function getOrCreateGymRole (guild, gym) {
 }
 
 /**
- * @param {Message} message
+ * @param {Discord.Message} message
  * @returns {boolean}
  */
 function shouldListen (message) {
