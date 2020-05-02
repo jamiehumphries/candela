@@ -118,6 +118,7 @@ async function getOrCreateGymMembershipChannel (guild) {
   } else {
     const botOnlyPermissions = ['SEND_MESSAGES', 'ADD_REACTIONS']
     return guild.createChannel(GYM_MEMBERSHIP, {
+      type: 'text',
       permissionOverwrites: [
         { id: guild.id, deny: botOnlyPermissions },
         { id: client.user.id, allow: botOnlyPermissions }
